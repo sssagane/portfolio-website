@@ -1,0 +1,26 @@
+name: Update Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # Corrected from run-on
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1  # Corrected action name
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Corrected 'secrates' to 'secrets'
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Corrected key name
+          aws-region: ap-south-1
+
+      - name: Deploy static website to S3 bucket
+        run: aws s3 sync . s3://new-bucket-shyam-1 --delete
+
+             
